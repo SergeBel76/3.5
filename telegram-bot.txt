@@ -10,7 +10,6 @@ questions = {
     "2. Где бы вы хотели жить?": ["Москва", "Лондон","Париж"],
     "3. Ваша любимая еда?": ["Бургер", "Пицца", "Пад-тай"],
 }
-TOKEN = "5912993450:AAG9E8qaOBWsVEaNPI5Qw6xU237QFiGVZgI"
 
 @bot.message_handler(commands=['start'])
 def start_(message):

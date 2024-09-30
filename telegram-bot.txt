@@ -3,6 +3,7 @@ from distr import TOKEN, red
 from telebot import types
 import time
 
+TOKEN = "5912993450:AAG9E8qaOBWsVEaNPI5Qw6xU237QFiGVZgI"
 bot = telebot.TeleBot(TOKEN)
 
 questions = {

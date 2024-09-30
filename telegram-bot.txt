@@ -1,0 +1,43 @@
+import telebot
+from distr import TOKEN, red
+from telebot import types
+import time
+
+bot = telebot.TeleBot(TOKEN)
+
+questions = {
+    "1. Какое у вас тотемное животное?": ["Волк", "Пантера", "Слон"],
+    "2. Где бы вы хотели жить?": ["Москва", "Лондон","Париж"],
+    "3.Ваша любимая еда?": ["Бургер", "Пица", "Пад-тай"],
+}
+
+
+@bot.message_handler(commands=['start'])
+def start_(message):
+    bot.send_message(message.chat.id, 'Добро пожаловать на нашу /victorina')
+
+
+@bot.message_handler(commands=['victorina'])
+def victorina(message):
+    red.delete(message.chat.id)
+    for question, answers in questions.items():
+        markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
+        for answer in answers:
+            markup.add(answer)
+        bot.send_message(message.chat.id, question, reply_markup=markup)
+        time.sleep(5)
+
+
+@bot.message_handler(func=lambda message: True)
+def handle_button_click(message):
+    bot.register_next_step_handler(message, result)
+    red.rpush(message.chat.id, message.text)
+
+
+def result(message):
+    answers = red.lrange(message.chat.id, 0, -1)
+    decoded_answers = [answer.decode('utf-8') for answer in answers]
+    bot.send_message(message.chat.id, f"Ответы пользователя: {', '.join(decoded_answers)}")
+
+
+bot.polling()
